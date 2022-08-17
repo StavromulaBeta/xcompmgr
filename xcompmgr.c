@@ -441,7 +441,6 @@ static unsigned char
 sum_gaussian (conv *map, double opacity, int x, int y, int width, int height)
 {
     int	    fx, fy;
-    double  *g_data;
     double  *g_line = map->data;
     int	    g_size = map->size;
     int	    center = g_size / 2;
@@ -478,7 +477,7 @@ sum_gaussian (conv *map, double opacity, int x, int y, int width, int height)
     v = 0;
     for (fy = fy_start; fy < fy_end; fy++)
     {
-	g_data = g_line;
+	double  *g_data = g_line;
 	g_line += g_size;
 
 	for (fx = fx_start; fx < fx_end; fx++)
@@ -1155,7 +1154,6 @@ repair_win (Display *dpy, win *w)
     }
     else
     {
-	XserverRegion	o;
 	parts = XFixesCreateRegion (dpy, NULL, 0);
 	set_ignore (dpy, NextRequest (dpy));
 	XDamageSubtract (dpy, w->damage, None, parts);
@@ -1164,7 +1162,7 @@ repair_win (Display *dpy, win *w)
 			       w->a.y + w->a.border_width);
 	if (compMode == CompServerShadows)
 	{
-	    o = XFixesCreateRegion (dpy, NULL, 0);
+	    XserverRegion o = XFixesCreateRegion (dpy, NULL, 0);
 	    XFixesCopyRegion (dpy, o, parts);
 	    XFixesTranslateRegion (dpy, o, w->shadow_dx, w->shadow_dy);
 	    XFixesUnionRegion (dpy, parts, parts, o);
@@ -1398,7 +1396,7 @@ determine_wintype (Display *dpy, Window w)
 {
     Window       root_return, parent_return;
     Window      *children = NULL;
-    unsigned int nchildren, i;
+    unsigned int nchildren;
     Atom         type;
 
     type = get_wintype_prop (dpy, w);
@@ -1414,7 +1412,7 @@ determine_wintype (Display *dpy, Window w)
 	return winNormalAtom;
     }
 
-    for (i = 0;i < nchildren;i++)
+    for (unsigned int i = 0; i < nchildren; i++)
     {
 	type = determine_wintype (dpy, children[i]);
 	if (type != winNormalAtom)
@@ -2061,7 +2059,6 @@ main (int argc, char **argv)
     Window	    root_return, parent_return;
     Window	    *children;
     unsigned int    nchildren;
-    int		    i;
     XRenderPictureAttributes	pa;
     XRectangle	    *expose_rects = NULL;
     int		    size_expose = 0;
@@ -2231,7 +2228,7 @@ main (int argc, char **argv)
 		      PropertyChangeMask);
 	XShapeSelectInput (dpy, root, ShapeNotifyMask);
 	XQueryTree (dpy, root, &root_return, &parent_return, &children, &nchildren);
-	for (i = 0; i < nchildren; i++)
+	for (unsigned int i = 0; i < nchildren; i++)
 	    add_win (dpy, children[i], i ? children[i-1] : None);
 	XFree (children);
     }
