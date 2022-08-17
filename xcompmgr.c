@@ -499,12 +499,12 @@ presum_gaussian (conv *map)
     Gsize = map->size;
 
     if (shadowCorner)
-	free ((void *)shadowCorner);
+	free (shadowCorner);
     if (shadowTop)
-	free ((void *)shadowTop);
+	free (shadowTop);
 
-    shadowCorner = (unsigned char *)(malloc ((Gsize + 1) * (Gsize + 1) * 26));
-    shadowTop = (unsigned char *)(malloc ((Gsize + 1) * 26));
+    shadowCorner = malloc ((Gsize + 1) * (Gsize + 1) * 26);
+    shadowTop = malloc ((Gsize + 1) * 26);
 
     for (x = 0; x <= Gsize; x++)
     {
