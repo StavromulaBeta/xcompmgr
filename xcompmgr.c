@@ -1177,7 +1177,7 @@ static unsigned int
 get_opacity_prop (Display *dpy, win *w, unsigned int def);
 
 static void
-map_win (Display *dpy, Window id, unsigned long sequence, Bool fade)
+map_win (Display *dpy, Window id, unsigned long sequence, Bool doFade)
 {
     win		*w = find_win (dpy, id);
 
@@ -1199,7 +1199,7 @@ map_win (Display *dpy, Window id, unsigned long sequence, Bool fade)
 #endif
     w->damaged = 0;
 
-    if (fade && fadeWindows)
+    if (doFade && fadeWindows)
 	set_fade (dpy, w, 0, get_opacity_percent (dpy, w, 1.0), fade_in_step, NULL, False, True, True);
 }
 
@@ -1264,14 +1264,14 @@ unmap_callback (Display *dpy, win *w, Bool gone)
 #endif
 
 static void
-unmap_win (Display *dpy, Window id, Bool fade)
+unmap_win (Display *dpy, Window id, Bool doFade)
 {
     win *w = find_win (dpy, id);
     if (!w)
 	return;
     w->a.map_state = IsUnmapped;
 #if HAS_NAME_WINDOW_PIXMAP
-    if (w->pixmap && fade && fadeWindows)
+    if (w->pixmap && doFade && fadeWindows)
 	set_fade (dpy, w, w->opacity*1.0/OPAQUE, 0.0, fade_out_step, unmap_callback, False, False, True);
     else
 #endif
@@ -1669,11 +1669,11 @@ destroy_callback (Display *dpy, win *w, Bool gone)
 #endif
 
 static void
-destroy_win (Display *dpy, Window id, Bool gone, Bool fade)
+destroy_win (Display *dpy, Window id, Bool gone, Bool doFade)
 {
     win *w = find_win (dpy, id);
 #if HAS_NAME_WINDOW_PIXMAP
-    if (w && w->pixmap && fade && fadeWindows)
+    if (w && w->pixmap && doFade && fadeWindows)
 	set_fade (dpy, w, w->opacity*1.0/OPAQUE, 0.0, fade_out_step, destroy_callback, gone, False, True);
     else
 #endif
@@ -1885,7 +1885,7 @@ error (Display *dpy, XErrorEvent *ev)
 }
 
 static void
-expose_root (Display *dpy, Window root, XRectangle *rects, int nrects)
+expose_root (Display *dpy, Window rootwin, XRectangle *rects, int nrects)
 {
     XserverRegion  region = XFixesCreateRegion (dpy, rects, nrects);
 
