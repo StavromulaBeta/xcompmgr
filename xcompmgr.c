@@ -156,15 +156,10 @@ static conv		*gaussianMap;
 #define WINDOW_TRANS	1
 #define WINDOW_ARGB	2
 
-#define TRANS_OPACITY	0.75
-
 #define DEBUG_REPAINT 0
 #define DEBUG_EVENTS  0
 #define DEBUG_SHAPE   0
 #define MONITOR_REPAINT 0
-
-#define SHADOWS		1
-#define SHARP_SHADOW	0
 
 typedef enum _compMode {
     CompSimple,		/* looks like a regular X server */
