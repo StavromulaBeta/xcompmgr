@@ -17,7 +17,8 @@ m4_ifndef([XORG_MACROS_VERSION],
 XORG_MACROS_VERSION(1.8)
 XORG_DEFAULT_OPTIONS
 
-PKG_CHECK_MODULES(XCOMPMGR, xcomposite xfixes xdamage xrender xext)
+PKG_CHECK_MODULES(XCOMPMGR,
+        [xcomposite xfixes xdamage xrender xext xproto >= 7.0.25])
 
 AC_CONFIG_FILES([
 	Makefile

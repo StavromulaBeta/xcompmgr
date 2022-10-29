@@ -1958,7 +1958,7 @@ ev_window (XEvent *ev)
 }
 #endif
 
-static void
+static void _X_COLD _X_NORETURN
 usage (const char *program)
 {
     fprintf (stderr, "%s v%s\n", program, PACKAGE_VERSION);
