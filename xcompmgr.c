@@ -563,9 +563,9 @@ make_shadow (Display *dpy, double opacity, int width, int height)
      */
     if (Gsize > 0)
 	d = shadowTop[opacity_int * (Gsize + 1) + Gsize];
-    else
-	d = sum_gaussian (gaussianMap, opacity, center, center, width, height);
+    else d=255;
     memset(data, d, sheight * swidth);
+
 
     /*
      * corners
@@ -666,7 +666,6 @@ shadow_picture (Display *dpy, double opacity, Picture alpha_pict, int width, int
 	XRenderFreePicture (dpy, shadowPicture);
 	return (Picture)None;
     }
-
     XPutImage (dpy, shadowPixmap, gc, shadowImage, 0, 0, 0, 0,
 	       shadowImage->width,
 	       shadowImage->height);
