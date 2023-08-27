@@ -563,7 +563,7 @@ make_shadow (Display *dpy, double opacity, int width, int height)
      */
     if (Gsize > 0)
 	d = shadowTop[opacity_int * (Gsize + 1) + Gsize];
-    else d=255;
+    else d=opacity*255;
     memset(data, d, sheight * swidth);
 
 
