@@ -2218,9 +2218,9 @@ main (int argc, char **argv)
 								 DefaultVisual (dpy, scr)),
 					CPSubwindowMode,
 					&pa);
-    blackPicture = solid_picture (dpy, True, 1, shadowR, shadowG, shadowB);
+    blackPicture = solid_picture (dpy, True, 1, (float)shadowR/255, (float)shadowG/255, (float)shadowB/255);
     if (compMode == CompServerShadows)
-	transBlackPicture = solid_picture (dpy, True, 0.3, shadowR, shadowG, shadowB);
+	transBlackPicture = solid_picture (dpy, True, 0.3, (float)shadowR/255, (float)shadowG/255, (float)shadowB/255);
     allDamage = None;
     clipChanged = True;
     XGrabServer (dpy);
