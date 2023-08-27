@@ -144,6 +144,11 @@ static Atom		winSplashAtom;
 static Atom		winDialogAtom;
 static Atom		winNormalAtom;
 
+/* Shadow Colours */
+static char shadowR = 0;
+static char shadowG = 0;
+static char shadowB = 0;
+
 /* opacity property name; sometime soon I'll write up an EWMH spec for it */
 #define OPACITY_PROP	"_NET_WM_WINDOW_OPACITY"
 
@@ -1762,7 +1767,7 @@ shape_kind(int kind)
   static char	buf[128];
 
   switch(kind){
-  case ShapeBounding: 
+  case ShapeBounding:
     return "ShapeBounding";
   case ShapeClip:
     return "ShapeClip";
@@ -1796,7 +1801,7 @@ shape_win (Display *dpy, XShapeEvent *se)
 	     se->width, se->height,
 	     se->x, se->y);
 #endif
-      
+
       clipChanged = True;
 
       region0 = XFixesCreateRegion (dpy, &w->shape_bounds, 1);
@@ -1819,7 +1824,7 @@ shape_win (Display *dpy, XShapeEvent *se)
       }
 
       region1 = XFixesCreateRegion (dpy, &w->shape_bounds, 1);
-      XFixesUnionRegion (dpy, region0, region0, region1); 
+      XFixesUnionRegion (dpy, region0, region0, region1);
       XFixesDestroyRegion (dpy, region1);
 
       /* ask for repaint of the old and new region */
@@ -2064,9 +2069,18 @@ main (int argc, char **argv)
     char	    *display = NULL;
     int		    o;
 
-    while ((o = getopt (argc, argv, "D:I:O:d:r:o:l:t:scnfFCaS")) != -1)
+    while ((o = getopt (argc, argv, "R:G:B:D:I:O:d:r:o:l:t:scnfFCaS")) != -1)
     {
 	switch (o) {
+	case 'R':
+	    shadowR = atoi (optarg);
+		 break;
+	case 'G':
+	    shadowG = atoi (optarg);
+		 break;
+	case 'B':
+	    shadowB = atoi (optarg);
+		 break;
 	case 'd':
 	    display = optarg;
 	    break;
@@ -2205,9 +2219,9 @@ main (int argc, char **argv)
 								 DefaultVisual (dpy, scr)),
 					CPSubwindowMode,
 					&pa);
-    blackPicture = solid_picture (dpy, True, 1, 0, 0, 0);
+    blackPicture = solid_picture (dpy, True, 1, shadowR, shadowG, shadowB);
     if (compMode == CompServerShadows)
-	transBlackPicture = solid_picture (dpy, True, 0.3, 0, 0, 0);
+	transBlackPicture = solid_picture (dpy, True, 0.3, shadowR, shadowG, shadowB);
     allDamage = None;
     clipChanged = True;
     XGrabServer (dpy);
